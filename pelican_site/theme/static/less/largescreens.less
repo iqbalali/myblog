@@ -1,0 +1,106 @@
+@import 'variables.less';
+
+// For the big screen only
+@media screen and (min-width: 1024px) {
+  #searchbar {
+    border: 1px solid @light-grey;
+  }
+
+  aside.sidebar {
+      width: 25%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      border-right: @light-grey 1px solid;
+
+    h2 {
+        margin: 10px 0 0 0;
+    }
+
+    div#user_meta {
+      max-width: 192px;
+      min-width: 180px;
+
+      ul {
+        li {
+            display: block;
+            // text-align: center;
+            // padding-left: 40px
+        }
+      }
+      div.social {
+
+          padding-top: 15px;
+      }
+    }
+  }
+
+  main {
+      width: 75%;
+      position: absolute;
+      top: 0;
+      left: 25%;
+      overflow-x: hidden;
+      overflow-y: hidden;
+
+
+    aside#top-posts {
+      max-width: 100%;
+      padding: 0 15% 0 15%;
+    }
+
+    aside#related-posts {
+      padding:40px 0 0 0;
+    }
+
+    img {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        max-width: 90%;
+    }
+
+    article {
+      padding: 0 15% 0 15%;
+      ul#related {
+         list-style-type: none;
+         padding-left: 0;
+      }
+      div#article_text {
+        pre {
+          font-size: 14px;
+        }
+      }
+    }
+
+    header {
+      max-width: 100%;
+      padding: 40px 15% 40px 15%;
+      border-top: 0;
+      text-align: right;
+
+      #searchbar {
+        float: right;
+      }
+
+    }
+    aside#top-posts aside#related-posts {
+      max-width: 100%;
+      padding: 0 15% 0 15%;
+      ul {
+        font-size: 16px;
+      }
+    }
+  }
+  .archives {
+    li {
+      float: none;
+    }
+    .date {
+      float: none;
+    }
+
+}
+}
+

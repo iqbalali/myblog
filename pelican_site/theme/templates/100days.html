@@ -1,0 +1,58 @@
+{% extends "base/base.html" %}
+{% block css %}<link rel="stylesheet" href="{{ SITEURL }}/theme/css/gallery.css" type="text/css">{% endblock %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block header %}
+<p>Updated on {{ page.locale_date }}</p>
+{% endblock %}
+
+{% block content %}
+<article>
+    <h3><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></h3>
+    <div id="two-columns" class="grid-container" style="display:block;">
+        <ul class="rig columns-2">
+        </ul>
+    </div>
+</article>
+
+{% endblock %}
+
+{% block javascript %}
+<script type="text/javascript">
+
+function createImages() {
+    start_date = new Date(2014, 03, 03) // April 3, 2014
+    days_passed = Math.floor((new Date() - start_date) / 1000 / 86400);
+    extension = '.jpg';
+    for (var i = 1; (i <= days_passed + 1) && (i <= 100); i++) {
+        // create img element
+        var img = document.createElement('img');
+        img.src = '/images/100daysofhappiness/' + i + extension;
+        img.setAttribute("onError", "this.onerror=null;this.src='/images/imagenotfound.jpg'");
+        img.setAttribute("id", i);
+        // end img
+
+        // create h3 for "Day X"
+        var h3 = document.createElement('h3');
+        h3.textContent = "Day " + i
+        // end h3
+
+        // create the li and append the elements
+        var li = document.createElement('li');
+        li.appendChild(img);
+        li.appendChild(h3);
+        // end li
+
+        $('.rig').append(li);
+    }
+}
+
+$(document).ready(function() {
+    createImages();
+});
+</script>
+{% endblock %}
+
+{% block footer %}
+<p><a href="{{ SITEURL }}/" class="button_accent">&larr; Back to Index</a></p>
+{% endblock %}

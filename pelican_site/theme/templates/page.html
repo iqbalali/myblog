@@ -1,0 +1,23 @@
+{% extends "base/base.html" %}
+{% block title %}{{ page.title }}{% endblock %}
+
+{% block header %}
+{% if page.modified  or page.locale_date %}
+<p>Updated on {{ page.modified|strftime('%Y-%m-%d') if page.modified else page.locale_date }}</p>
+{% endif %}
+{% endblock %}
+
+{% block content %}
+<article>
+  <div id="article_title">
+    <h3><a href="{{ SITEURL }}/{{ page.url }}">{{ page.title }}</a></h3>
+  </div>
+  <div id="article_text">
+    {{ page.content }}
+  </div>
+</article>
+{% endblock %}
+
+{% block footer %}
+<p><a href="{{ SITEURL }}/" class="button_accent">&larr; Back to Index</a></p>
+{% endblock %}

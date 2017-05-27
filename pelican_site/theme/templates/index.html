@@ -1,0 +1,34 @@
+{% extends "base/base.html" %}
+{% block content %}
+<aside id="top-posts"></aside>
+{% for article in articles_page.object_list %}
+<article>
+  {% if article.photo_image %}<a href="{{ SITEURL }}/{{ article.url }}"><img src="{{ SITEURL }}/{{ article.photo_image[2] }}"
+      style="display: inline; float: right; margin: 2px 0 2ex 4ex;" /></a>
+  {% endif %}
+  <div id="article_title">
+    <h2><a href="{{ SITEURL }}/{{ article.url }}">{{ article.title }}</a></h2>
+  </div>
+  <div id="article_text">
+    {{ article.summary | striptags }} <a href="{{ SITEURL }}/{{ article.url }}">[Read More]</a>
+  </div>
+  {% set post_or_update = 'Updated on' if article.modified else '' %}
+  <p id="date">{{ post_or_update }} {{ article.modified|strftime('%Y-%m-%d') if article.modified else article.locale_date }}</p>
+  <p id="category">Category: <a href="{{ SITEURL }}/{{ article.category.url }}">{{ article.category }}</a></p>
+  {% if article.tags %}
+  <p id="tags">Tags:
+    {% for tag in article.tags %}
+        <a href="{{ SITEURL }}/{{ tag.url }}">{{ tag }}</a>{% if not loop.last %},{% endif %}
+    {% endfor %}
+  </p>
+  {% endif %}
+</article>
+{% if not loop.last %}
+<hr />
+{% endif %}
+{% endfor %}
+{% endblock %}
+
+{% block footer %}
+{% include "modules/pagination.html" %}
+{% endblock %}

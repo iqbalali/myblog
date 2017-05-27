@@ -1,0 +1,14 @@
+{% extends "base/base.html" %}
+{% block title %}Tags{% endblock %}
+
+{% block content %}
+<article>
+  <div id="article_text">
+    <ul class="tagcloud">
+        {% for tag in tag_cloud %}
+            <li class="tag-{{ tag.1 }}"><a href="{{ SITEURL }}/{{ tag.0.url }}">{{ tag.0 }}</a></li>
+        {% endfor %}
+    </ul>
+  </div>
+</article>
+{% endblock %}

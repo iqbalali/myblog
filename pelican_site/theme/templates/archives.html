@@ -1,0 +1,26 @@
+{% extends "base/base.html" %}
+{% block title %}Archives{% endblock %}
+
+{% block content %}
+<article>
+  <div id="article_text">
+
+    <ul class="archives">
+        {% for year, date_year in dates | groupby( 'date.year' ) | sort(reverse=True) %}
+
+        <li class="year"><h1>{{ year }}</h1></li>
+        {% for month, articles in date_year|groupby( 'date.month' ) | sort(reverse=True) %}
+        {% for article in articles %}
+        <li>
+            <span class="title">
+                <a href="{{ article.url }}">{{ article.title  }}</a>
+            </span>
+            <span class="date">{{ article.date.strftime('%d %b') }}</span>
+        </li>
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+    </ul>
+  </div>
+</article>
+{% endblock %}

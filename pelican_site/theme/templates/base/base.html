@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="{{ DEFAULT_LANG }}">
+
+<head>
+  <style type="text/css">
+  </style>
+  {% block css %}{% endblock %}
+  <link rel="shortcut icon" href="{{ SITEURL }}/images/favicon.png" type="image/png">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="{{ AUTHOR }}">
+  <meta name="description" content="Posts and writings by {{ AUTHOR }}">
+
+
+  {% if JSON_FEED %}
+  <link rel="alternate" title="{{ SITENAME }} JSON Feed" type="application/json" href="{{ JSON_FEED }}" />
+  {% endif %}
+  {% if FEED_ALL_ATOM %}
+  <link href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}" type="application/atom+xml" rel="alternate" title="{{ SITENAME }} Full Atom Feed" />
+  {% endif %}
+  {% if FEED_ALL_RSS %}
+  <link href="{{ FEEDPRESS_RSS }}" type="application/rss+xml" rel="alternate" title="{{ SITENAME }} Full RSS Feed" />
+  {% endif %}
+
+  {% block head %}
+  {% endblock %}
+
+  <title>
+    {% block title %}{{ SITENAME }}{% endblock %}
+  </title>
+
+  {% if (article and article.photo_gallery) or (articles_page and articles_page.object_list[0].photo_gallery) %}
+  <link rel="stylesheet" href="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/css/magnific-popup.css">
+  {% endif %}
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div id="user_meta">
+      <a href="{{ SITEURL }}">
+        <img src="{{ SITEURL }}/images/avatar.png" id="avatar" alt="logo">
+      </a>
+      <h2><a href="{{ SITEURL }}">{{ AUTHOR }}</a></h2>
+      <p id="slogan">{{ TAGLINE }}</p>
+      <ul>
+        {% for title, link in MENUITEMS %}
+        <li><a href="{{ link }}">{{ title }}</a></li>
+        {% endfor %}
+        {% if DISPLAY_CATEGORIES_ON_MENU %}{% for category, articles in categories %}
+        <li><a href="{{ SITEURL }}/{{ category.url }}">{{ category }}</a></li>
+        {% endfor %}{% endif %}
+        {% if DISPLAY_PAGES_ON_MENU %}
+          {% for p in pages %}
+          <li><a href="{{ SITEURL }}/{{ p.url }}">{{ p.title }}</a></li>
+          {% endfor %}
+          {% if TESTING %}
+          <li><a href="{{ SITEURL }}/drafts.html">Drafts</a></li>
+          {% endif %}
+        {% endif %}
+        {% for name, link in LINKS %}
+        <li><a href="{{ link }}" target="_blank">{{ name }}</a></li>
+        {% endfor %}
+      </ul>
+      <div class="social">
+        {% for name, link in SOCIAL %}
+        <a href="{{ link }}" target="_blank"><img src="{{ SITEURL }}/images/social/{{ name }}.png"></a>
+        {% endfor %}
+      </div>
+    </div>
+
+  </aside>
+
+  <main>
+    <header>
+      {% block header %}
+      <div id="headcontent">
+        <p id="headerlinks">
+        <a href="{{ SITEURL }}">Home</a> &#124;
+        <a href="{{ SITEURL }}/archives.html">Archives</a>  &#124;
+        <a href="{{ SITEURL }}/tags.html">Tags</a>
+        {% if FEED_ALL_ATOM %}
+        &#124; <a href="{{ FEED_DOMAIN }}/{{ FEED_ALL_ATOM }}">Atom Feed</a>
+        {% endif %}
+        {% if FEED_ALL_RSS %}
+        &#124; <a href="{{ FEEDPRESS_RSS }}">RSS Feed</a>
+        {% endif %}
+        </p>
+      </div>
+      {% endblock header %}
+    </header>
+
+    {% block content %}
+    {% endblock %}
+
+    <footer>
+      {% block footer %}
+      {% endblock %}
+    </footer>
+
+    <div id="ending_message">
+      <p>&copy {{ AUTHOR }} 2016. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Hosted on <a href="http://www.macminicolo.net">Macminicolo</a></p>
+    </div>
+  </main>
+  {% include "base/styles.html" %}
+  {% include "base/javascript.html" %}
+
+  {% block javascript %}{% endblock %}
+
+    {% if (article and article.photo_gallery) or (articles_page and articles_page.object_list[0].photo_gallery) %}
+
+    <!-- Magnific Popup core JS file -->
+    <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/magnific-popup.min.js"></script>
+    <script>
+    $('.gallery').magnificPopup({
+        delegate: 'a',
+        type: 'image',
+        gallery: {
+            enabled: true,
+            navigateByImgClick: true,
+            preload: [1,2]
+        },
+        image: {
+            titleSrc: function(item) {
+                if (item.el.attr('caption')) {
+                    return (item.el.attr('caption').replace(/\\n/g, '<br />'));
+                }
+            return item.el.attr('title') + '<small>' + item.el.attr('exif') + '</small>';
+        } }
+    });
+    </script>
+    {% endif %}
+</body>
+</html>
