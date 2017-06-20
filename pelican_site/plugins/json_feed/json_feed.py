@@ -92,10 +92,15 @@ class Item(Base):
 
 class Items(list):
     @classmethod
-    def from_generator(cls, json_feed_generator):
+    def from_generator(cls, json_feed_generator, category=None, tag=None):
         self = cls()
         for article in json_feed_generator.articles:
-            self.append(Item.from_article(json_feed_generator, article))
+            if category is None and tag is None:
+                self.append(Item.from_article(json_feed_generator, article))
+            elif category == article.category:
+                self.append(Item.from_article(json_feed_generator, article))
+            elif tag in article.metadata.get('tags', []):
+                self.append(Item.from_article(json_feed_generator, article))
         return self
 
     def as_json(self):
@@ -124,7 +129,7 @@ class JsonFeed(Base):
         self.version = version
 
     @classmethod
-    def from_generator(cls, json_feed_generator):
+    def from_generator(cls, json_feed_generator, category=None, tag=None):
         return cls(
             author=Author(json_feed_generator.settings.get('AUTHOR')),
             description=None,
@@ -133,7 +138,7 @@ class JsonFeed(Base):
             title=json_feed_generator.settings.get('SITENAME'),
             user_comment=None,
             version='https://jsonfeed.org/version/1',
-            items=Items.from_generator(json_feed_generator),
+            items=Items.from_generator(json_feed_generator, category, tag),
             favicon=json_feed_generator.settings.get('SITE_FAVICON', None)
         )
 
@@ -145,10 +150,10 @@ class JsonFeedGenerator(object):
         self.context = article_generator.context
         self.generator = article_generator
 
-        self.path = 'feed.json'
+        self.path = self.settings.get('JSON_FEED')
 
-        self.site_url = article_generator.context.get('SITEURL',
-                                                      path_to_url(get_relative_path(self.path)))
+        self.site_url = self.context.get('SITEURL',
+                                         path_to_url(get_relative_path(self.path)))
 
         self.feed_domain = self.context.get('FEED_DOMAIN')
         self.feed_url = '{}/{}'.format(self.feed_domain, self.path)
@@ -156,20 +161,42 @@ class JsonFeedGenerator(object):
     def build_url(self, path):
         return "%s/%s" % (self.site_url, path)
 
+    def write_category_feed(self):
+        if self.settings.get('JSON_CATEGORY_FEED_RSS'):
+            for category, articles in self.generator.categories:
+                complete_path = os.path.join(self.generator.output_path,
+                                             self.settings.get('JSON_CATEGORY_FEED_RSS') % category)
+                self._write_feed(complete_path, JsonFeed.from_generator(self, category=category))
+
+    def write_tag_feed(self):
+        if self.settings.get('JSON_TAG_FEED_RSS'):
+            for tag, _ in self.context.get('tags'):
+                complete_path = os.path.join(self.generator.output_path,
+                                             self.settings.get('JSON_TAG_FEED_RSS') % tag)
+                self._write_feed(complete_path, JsonFeed.from_generator(self, tag=tag))
+
     def write_feed(self):
         complete_path = os.path.join(self.generator.output_path, self.path)
+        self._write_feed(complete_path, JsonFeed.from_generator(self))
+
+    def write_all(self):
+        self.write_feed()
+        self.write_category_feed()
+        self.write_tag_feed()
+
+    def _write_feed(self, path, json_feed):
         try:
-            os.makedirs(os.path.dirname(complete_path))
+            os.makedirs(os.path.dirname(path))
         except Exception:
             pass
 
-        with open(complete_path, 'w') as f:
-            json.dump(JsonFeed.from_generator(self), f, cls=JSONEncoder)
+        with open(path, 'w') as f:
+            json.dump(json_feed, f, cls=JSONEncoder)
 
 
 def get_generators(article_generator, writer):
     json_feed_generator = JsonFeedGenerator(article_generator)
-    json_feed_generator.write_feed()
+    json_feed_generator.write_all()
 
 
 def register():

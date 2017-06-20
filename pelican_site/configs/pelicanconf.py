@@ -90,6 +90,8 @@ ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
 # Feed Settings
 
 JSON_FEED = "%s/%s" % (SITEURL, 'feed.json')
+JSON_CATEGORY_FEED_RSS = 'feeds/category_%s.json'
+JSON_TAG_FEED_RSS = 'feeds/tag_%s.json'
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None

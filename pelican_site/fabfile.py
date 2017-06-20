@@ -1,8 +1,8 @@
-from fabric.api import *
+# from fabric.api import *
+from fabric.api import local, hosts, env
 import fabric.contrib.project as project
-from lib import util, constants
+from lib import constants
 import os
-import socket
 from datetime import datetime
 
 today = datetime.today()
@@ -42,6 +42,7 @@ def clean():
 def build():
     local('{pelican} -s configs/pelicanconf.py'.format(**env))
 
+
 def buildprod():
     local('{pelican} -v -s configs/publishconf.py'.format(**env))
 
@@ -56,7 +57,6 @@ def regenerate():
 
 
 def serve():
-    local('open http://localhost:8000')
     local('cd {deploy_path} && python -m SimpleHTTPServer'.format(**env))
 
 
