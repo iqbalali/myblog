@@ -32,6 +32,7 @@ DEFAULT_CATEGORY = 'Tech'
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 DISPLAY_PAGES_ON_MENU = True
 DISPLAY_CATEGORIES_ON_MENU = True
+DIRECT_TEMPLATES = ['index', 'categories', 'archives', 'feeds']
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/.htaccess': {'path': '.htaccess'},
@@ -89,9 +90,6 @@ ARTICLE_SAVE_AS = '{date:%Y}/{date:%m}/{date:%d}/{slug}/index.html'
 
 # Feed Settings
 
-JSON_FEED = "%s/%s" % (SITEURL, 'feed.json')
-JSON_CATEGORY_FEED_RSS = 'feeds/category_%s.json'
-JSON_TAG_FEED_RSS = 'feeds/tag_%s.json'
 FEED_ALL_ATOM = None
 CATEGORY_FEED_ATOM = None
 TRANSLATION_FEED_ATOM = None
@@ -143,6 +141,9 @@ ASSET_CONFIG = (
 SITE_FAVICON = SITEURL + '/images/favicon.png'
 JSON_SHORTEN_URL = True
 JSON_CAMPAIGN_PARAM = "JSONFeed"
+JSON_FEED = 'feed.json'
+JSON_CATEGORY_FEED_RSS = 'feeds/%s.json'
+JSON_TAG_FEED_RSS = 'feeds/%s.json'
 
 # Photos plugin config
 PHOTO_LIBRARY = CONTENT_PATH + '/gallery_photos'

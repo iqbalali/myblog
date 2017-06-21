@@ -15,7 +15,6 @@ SITEURL = 'https://ryanmo.co'
 RELATIVE_URLS = False
 
 FEEDPRESS_RSS = 'http://feedpress.me/ryanmoco'
-JSON_FEED = "%s/%s" % (SITEURL, 'feed.json')
 FEED_ALL_RSS = 'feed.xml'
 CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
 TAG_FEED_RSS = 'feeds/%s.rss.xml'

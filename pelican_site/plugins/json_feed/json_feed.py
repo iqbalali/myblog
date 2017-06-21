@@ -130,10 +130,17 @@ class JsonFeed(Base):
 
     @classmethod
     def from_generator(cls, json_feed_generator, category=None, tag=None):
+        if category:
+            url_part = json_feed_generator.settings.get('JSON_CATEGORY_FEED_RSS') % category
+        elif tag:
+            url_part = json_feed_generator.settings.get('JSON_TAG_FEED_RSS') % tag
+        else:
+            url_part = json_feed_generator.settings.get('JSON_FEED')
+
         return cls(
             author=Author(json_feed_generator.settings.get('AUTHOR')),
             description=None,
-            feed_url=json_feed_generator.feed_url,
+            feed_url='{}/{}'.format(json_feed_generator.feed_domain, url_part),
             home_page_url=json_feed_generator.site_url,
             title=json_feed_generator.settings.get('SITENAME'),
             user_comment=None,
@@ -156,33 +163,30 @@ class JsonFeedGenerator(object):
                                          path_to_url(get_relative_path(self.path)))
 
         self.feed_domain = self.context.get('FEED_DOMAIN')
-        self.feed_url = '{}/{}'.format(self.feed_domain, self.path)
 
-    def build_url(self, path):
-        return "%s/%s" % (self.site_url, path)
+    def get_json_feeds(self):
+        to_ret = [(os.path.join(self.generator.output_path, self.path),
+                  JsonFeed.from_generator(self))]
 
-    def write_category_feed(self):
         if self.settings.get('JSON_CATEGORY_FEED_RSS'):
             for category, articles in self.generator.categories:
                 complete_path = os.path.join(self.generator.output_path,
                                              self.settings.get('JSON_CATEGORY_FEED_RSS') % category)
-                self._write_feed(complete_path, JsonFeed.from_generator(self, category=category))
-
-    def write_tag_feed(self):
+                json_feed_generator = JsonFeed.from_generator(self, category=category)
+                to_ret.append((complete_path, json_feed_generator))
         if self.settings.get('JSON_TAG_FEED_RSS'):
             for tag, _ in self.context.get('tags'):
                 complete_path = os.path.join(self.generator.output_path,
                                              self.settings.get('JSON_TAG_FEED_RSS') % tag)
-                self._write_feed(complete_path, JsonFeed.from_generator(self, tag=tag))
+                to_ret.append((complete_path, JsonFeed.from_generator(self, tag=tag)))
+        return to_ret
 
-    def write_feed(self):
-        complete_path = os.path.join(self.generator.output_path, self.path)
-        self._write_feed(complete_path, JsonFeed.from_generator(self))
+    def build_url(self, path):
+        return "%s/%s" % (self.site_url, path)
 
-    def write_all(self):
-        self.write_feed()
-        self.write_category_feed()
-        self.write_tag_feed()
+    def write_feeds(self):
+        for complete_path, generator in self.get_json_feeds():
+            self._write_feed(complete_path, generator)
 
     def _write_feed(self, path, json_feed):
         try:
@@ -194,10 +198,15 @@ class JsonFeedGenerator(object):
             json.dump(json_feed, f, cls=JSONEncoder)
 
 
-def get_generators(article_generator, writer):
-    json_feed_generator = JsonFeedGenerator(article_generator)
-    json_feed_generator.write_all()
+def get_generators(article_generator):
+    article_generator.json_feed_generator = JsonFeedGenerator(article_generator)
+    article_generator._update_context(('json_feed_generator',))
+
+
+def write_generator(article_generator, writer):
+    article_generator.context.get('json_feed_generator').write_feeds()
 
 
 def register():
-    signals.article_writer_finalized.connect(get_generators)
+    signals.article_generator_finalized.connect(get_generators)
+    signals.article_writer_finalized.connect(write_generator)
