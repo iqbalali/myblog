@@ -1,0 +1,14 @@
+{% extends "base/base.html" %}
+{% block title %}Feeds{% endblock %}
+
+{% block content %}
+<article>
+  <div id="article_text">
+    <ul>
+      {% for category, json_feed in json_feed_generator.get_json_feeds() %}
+      <li><a href="{{ json_feed.feed_url }}">{{ json_feed.feed_url }}</a></li>
+      {% endfor %}
+    </ul>
+  </div>
+</article>
+{% endblock %}

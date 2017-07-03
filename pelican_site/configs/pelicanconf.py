@@ -10,8 +10,6 @@ BASE_BLOG_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os
 
 sys.path.append(os.path.join(BASE_BLOG_PATH, 'pelican_site'))
 
-from lib.gist import MarkdownInclude
-
 # Set up some path names
 CONTENT_PATH = os.path.join(BASE_BLOG_PATH, 'content')
 ALL_POSTS_PATH = os.path.join(CONTENT_PATH, 'posts')
@@ -32,15 +30,15 @@ DEFAULT_CATEGORY = 'Tech'
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 DISPLAY_PAGES_ON_MENU = True
 DISPLAY_CATEGORIES_ON_MENU = True
-DIRECT_TEMPLATES = ['index', 'categories', 'archives', 'feeds']
+DIRECT_TEMPLATES = ['index', 'categories', 'archives', 'tags', 'feeds']
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/.htaccess': {'path': '.htaccess'},
     }
 EXTRA_PATH_METADATA.update(LIST_METADATA)
 JINJA_ENVIRONMENT = dict(
-    comment_start_string = '###',
-    comment_end_string = '/###'
+    comment_start_string='###',
+    comment_end_string='/###'
 )
 
 # Found at https://github.com/getpelican/pelican/wiki/Tips-n-Tricks
@@ -50,7 +48,6 @@ MARKDOWN = {
         'markdown.extensions.extra',
         'markdown.extensions.footnotes',
         'markdown.extensions.toc'
-        # MarkdownInclude(configs={'base_path': CONTENT_PATH})
     ],
     'output_format': 'html5',
 }
@@ -67,7 +64,8 @@ PLUGINS = [
     'summary',
     'tag_cloud',
     'drafts_page',
-    'json_feed'
+    'json_feed',
+    'code_replacement'
 ]
 SITENAME = u'ryanmo.co'
 SITEURL = 'http://localhost:8000'
