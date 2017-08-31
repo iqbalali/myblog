@@ -9,12 +9,6 @@ from lib.gist import MarkdownInclude
 class CustomMarkdownReader(MarkdownReader):
 
     def read(self, source_path):
-        """Parse content and metadata of markdown files.
-
-        Rendering them as jinja templates first.
-
-        """
-
         self._source_path = source_path
         default_extensions = self.settings['MARKDOWN']['extensions']
         default_extensions.append(

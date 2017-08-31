@@ -35,6 +35,7 @@ PLUGINS.extend([
     'bigfoot_footnotes',
     'all_articles_json',
 ])
+STATIC_PATHS.append('json')
 
 ARTICLE_URL = '{date:%Y}/{date:%m}/{date:%d}/{slug}'
 

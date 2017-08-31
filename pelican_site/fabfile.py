@@ -5,25 +5,43 @@ from lib import constants
 import os
 from datetime import datetime
 
+HOME = os.path.expanduser('~')
 today = datetime.today()
 
-HOME = os.path.expanduser('~')
-# Local path configuration (can be absolute or relative to fabfile)
-env.deploy_path = '/tmp/ryanmoco/'
-env.HOME = HOME
 
-env.dest_path = '/var/www/ryanssite/'
-env.dropbox_path = constants.dropbox_path
-env.staging_path = constants.staging_path
-env.log_file = constants.log_file
+class FabConfig(object):
+    deploy_path = '/tmp/ryanmoco'
+    dest_path = '/var/www/ryanssite/'
+    pelican = '{HOME}/.virtualenvs/blog/bin/pelican'.format(HOME=HOME)
+
+    dropbox_path = constants.dropbox_path
+    staging_path = constants.staging_path
+    log_file = constants.log_file
+
+    def asdict(self):
+        print 'dict'
+        return {key: getattr(self, key) for key in dir(self) if not key.startswith('__') and not callable(key)}
+
+
+class iMacFabConfig(FabConfig):
+    pass
+
+
+class MiniFabConfig(FabConfig):
+    pelican = '{HOME}/.virtualenvs/ryanmoco/bin/pelican'.format(HOME=HOME)
+
 
 env.roledefs['remote'] = [constants.production_server]
 env.roledefs['local'] = ['localhost']
 
-if os.path.exists('{HOME}/.virtualenvs/blog/bin/pelican'.format(**env)):
-    env.pelican = '{HOME}/.virtualenvs/blog/bin/pelican'.format(**env)
-else:
-    env.pelican = '{HOME}/dev/pelican/bin/pelican'.format(**env)
+if not env.roles:
+    config = iMacFabConfig()
+elif env.roles[0] == 'local':
+    config = MiniFabConfig()
+elif env.roles[0] == 'remote':
+    config = iMacFabConfig()
+
+env.update(**config.asdict())
 
 DEPLOY_PATH = env.deploy_path
 

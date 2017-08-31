@@ -13,23 +13,13 @@ log = logging.getLogger(__name__)
 INC_SYNTAX = re.compile(r'\{!\s*(.+?)\s*!\}')
 
 
-class GistFetchException(Exception):
-    """Raised when attempt to fetch content of a Gist from github.com fails."""
-
-    def __init__(self, url, status_code):
-        """Initialize the exception."""
-        Exception.__init__(self)
-        self.message = 'Received a {0} response from Gist URL: {1}'.format(
-            status_code, url)
-
-
 class MarkdownInclude(Extension):
     def __init__(self, configs={}):
         self.config = {
             'base_path': ['.', 'Default location from which to evaluate '
-                          'relative paths for the include statement.'],
+                          'from the default path.'],
             'source_path': ['.', 'Default location from which to evaluate '
-                            'relative paths for the include statement.'],
+                            'relative paths from the file.'],
             'encoding': ['utf-8', 'Encoding of the files used by the include '
                          'statement.']
         }
@@ -43,29 +33,11 @@ class MarkdownInclude(Extension):
 
 
 class IncludePreprocessor(Preprocessor):
-    '''
-    This provides an "include" function for Markdown, similar to that found in
-    LaTeX (also the C pre-processor and Fortran). The syntax is {!filename!},
-    which will be replaced by the contents of filename. Any such statements in
-    filename will also be replaced. This replacement is done prior to any other
-    Markdown processing. All file-names are evaluated relative to the location
-    from which Markdown is being called.
-    '''
     def __init__(self, md, config):
         super(IncludePreprocessor, self).__init__(md)
         self.base_path = config['base_path']
         self.source_path = config['source_path']
         self.encoding = config['encoding']
-
-    def get_raw_gist(self, url):
-        import requests
-        """Get raw gist text."""
-        resp = requests.get(url)
-
-        if not resp.ok:
-            raise GistFetchException(url, resp.status_code)
-
-        return resp.text
 
     def run(self, lines):
         for line in lines:
@@ -82,7 +54,7 @@ class IncludePreprocessor(Preprocessor):
 
                 filename = os.path.expanduser(filename)
                 if not os.path.isabs(filename):
-                    filename = os.path.normpath(
+                    filename = os.path.abspath(
                         os.path.join(dir_to_file, filename)
                     )
                 try:
@@ -90,15 +62,11 @@ class IncludePreprocessor(Preprocessor):
                         text = r.readlines()
                 except Exception as e:
                     log.warning('Could not find file {}. Error: {}'.format(filename, e))
-                    lines[loc] = INC_SYNTAX.sub('', line)
+                    # lines[loc] = INC_SYNTAX.sub('', line) # to remove
                     continue
 
-                # poor man's 'strip the newlines off the end'
-                for i in range(len(text)):
-                    text[i] = text[i][0:-1]
-
-                text = ["\t%s" % line for line in text]
-                # print text
+                # indent text
+                text = ["\t%s" % line.rstrip('\n') for line in text]
                 lines = lines[:loc] + text + lines[loc + 1:]
         return lines
 

@@ -25,7 +25,7 @@ LIST_METADATA = {'posts/Lists/%s' % post: {'template': 'lists'} for post in LIST
 # Basic Settings
 
 AUTHOR = u'Ryan M'
-USE_FOLDER_AS_CATEGORY = True
+USE_FOLDER_AS_CATEGORY = False
 DEFAULT_CATEGORY = 'Tech'
 DEFAULT_DATE_FORMAT = "%Y-%m-%d"
 DISPLAY_PAGES_ON_MENU = True
@@ -60,6 +60,7 @@ OUTPUT_SOURCES_EXTENSION = '.txt'
 RELATIVE_URLS = True
 PLUGIN_PATHS = ['../plugins']
 PLUGINS = [
+    'taglist',
     'photos',
     'summary',
     'tag_cloud',
@@ -73,7 +74,6 @@ STATIC_PATHS = [
     'downloads',
     'extra',
     'images',
-    'json',
     'posts'
 ]
 TIMEZONE = 'America/Los_Angeles'
