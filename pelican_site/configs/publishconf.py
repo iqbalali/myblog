@@ -18,6 +18,7 @@ FEEDPRESS_RSS = 'http://feedpress.me/ryanmoco'
 FEED_ALL_RSS = 'feed.xml'
 CATEGORY_FEED_RSS = 'feeds/%s.rss.xml'
 TAG_FEED_RSS = 'feeds/%s.rss.xml'
+RSS_FEED_SUMMARY_ONLY = False
 
 # Social widget
 SOCIAL = (
@@ -46,9 +47,6 @@ DISQUS_SITENAME = 'rjames86'
 PIWIK_ANALYTICS = True
 
 # Plugins
-
-# Assets
-ASSET_DEBUG = False
 
 # JSON Feed
 SITE_FAVICON = SITEURL + '/images/favicon.png'

@@ -10,6 +10,7 @@ def add_footnote_class(li):
     li['class'] = 'footnote'
     return li
 
+
 def content_object_init(instance):
 
     if instance._content is not None:

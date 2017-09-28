@@ -117,24 +117,6 @@ REVERSE_CATEGORY_ORDER = True
 
 # Plugins
 
-# Assets
-
-# ASSET_DEBUG = True
-ASSET_BUNDLES = (
-    ('blah', ['main.coffee'], {'filters': 'coffeescript', 'output': 'js/mainmain.js'}),
-)
-ASSET_SOURCE_PATHS = [
-    THEME_PATH + '/static/coffee'
-]
-
-ASSET_CONFIG = (
-    ('LESS_BIN', '/Users/rjames/.virtualenvs/blog/bin/lessc'),
-    ('LESS_RUN_IN_DEBUG', True),
-    ('LESS_AS_OUTPUT', True),
-    # ('LESS_PATHS', [THEME_PATH + '/static/less']),
-
-)
-
 # JSON Feed
 SITE_FAVICON = SITEURL + '/images/favicon.png'
 JSON_SHORTEN_URL = True

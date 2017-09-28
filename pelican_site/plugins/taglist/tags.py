@@ -4,7 +4,7 @@ from pelican import signals
 
 """
 Creates a folder in your Pelican content folder called "json"
-and createa  file called "tags.json"
+and create a file called "tags.json"
 
 """
 
