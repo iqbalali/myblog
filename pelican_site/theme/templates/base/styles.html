@@ -1,12 +1,14 @@
 {% block css %}{% endblock %}
 <script>
+{% assets filters="pyscss,cssmin", output="css/style.min.css", "scss/style.scss" %}
   var cb = function() {
     var l = document.createElement('link'); l.rel = 'stylesheet';
-    l.href = "{{ SITEURL }}/theme/css/style.css";
+    l.href = "{{ SITEURL }}/{{ ASSET_URL }}";
     var h = document.getElementsByTagName('head')[0]; h.parentNode.insertBefore(l, h);
   };
   var raf = requestAnimationFrame || mozRequestAnimationFrame ||
       webkitRequestAnimationFrame || msRequestAnimationFrame;
   if (raf) raf(cb);
   else window.addEventListener('load', cb);
+{% endassets %}
 </script>

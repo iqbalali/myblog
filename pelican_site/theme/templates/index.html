@@ -1,6 +1,6 @@
 {% extends "base/base.html" %}
 {% block content %}
-<aside id="top-posts"></aside>
+<!-- <aside id="top-posts"></aside> -->
 {% for article in articles_page.object_list %}
 <article>
   {% if article.photo_image %}<a href="{{ SITEURL }}/{{ article.url }}"><img src="{{ SITEURL }}/{{ article.photo_image[2] }}"

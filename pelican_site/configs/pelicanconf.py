@@ -60,13 +60,15 @@ OUTPUT_SOURCES_EXTENSION = '.txt'
 RELATIVE_URLS = True
 PLUGIN_PATHS = ['../plugins']
 PLUGINS = [
-    'taglist',
+    'assets',
+    'build_critical',
+    'code_replacement',
+    'drafts_page',
+    'json_feed',
     'photos',
     'summary',
     'tag_cloud',
-    'drafts_page',
-    'json_feed',
-    'code_replacement'
+    'taglist',
 ]
 SITENAME = u'ryanmo.co'
 SITEURL = 'http://localhost:8000'
@@ -134,3 +136,12 @@ PHOTO_EXIF_KEEP = True
 PHOTO_GALLERY = (1024, 768, 80)
 PHOTO_ARTICLE = (760, 506, 80)
 PHOTO_THUMB = (384, 288, 60)
+
+# Webassets
+ASSET_BUNDLES = (
+    (
+        'critical',
+        ['scss/default_mobile.scss', 'scss/largescreens.scss'],
+        {'filters': 'pyscss', 'output': 'templates/critical.css'}
+    ),
+)

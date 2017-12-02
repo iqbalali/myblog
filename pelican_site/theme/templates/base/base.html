@@ -92,43 +92,10 @@
 
     {% block content %}
     {% endblock %}
-
-    <footer>
-      {% block footer %}
-      {% endblock %}
-    </footer>
-
-    <div id="ending_message">
-      <p>&copy {{ AUTHOR }} 2016. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Hosted on <a href="http://www.macminicolo.net">Macminicolo</a></p>
-    </div>
+    {% include "footer.html" %}
   </main>
   {% include "base/styles.html" %}
   {% include "base/javascript.html" %}
 
-  {% block javascript %}{% endblock %}
-
-    {% if (article and article.photo_gallery) or (articles_page and articles_page.object_list[0].photo_gallery) %}
-
-    <!-- Magnific Popup core JS file -->
-    <script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/magnific-popup.min.js"></script>
-    <script>
-    $('.gallery').magnificPopup({
-        delegate: 'a',
-        type: 'image',
-        gallery: {
-            enabled: true,
-            navigateByImgClick: true,
-            preload: [1,2]
-        },
-        image: {
-            titleSrc: function(item) {
-                if (item.el.attr('caption')) {
-                    return (item.el.attr('caption').replace(/\\n/g, '<br />'));
-                }
-            return item.el.attr('title') + '<small>' + item.el.attr('exif') + '</small>';
-        } }
-    });
-    </script>
-    {% endif %}
 </body>
 </html>

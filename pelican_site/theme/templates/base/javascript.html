@@ -1,2 +1,28 @@
 <script src="{{ SITEURL }}/theme/js/main.js" type="text/javascript"></script>
 {% include 'piwik.html' %}
+
+{% block javascript %}{% endblock %}
+
+{% if (article and article.photo_gallery) or (articles_page and articles_page.object_list[0].photo_gallery) %}
+
+<!-- Magnific Popup core JS file -->
+<script src="{{ SITEURL }}/{{ THEME_STATIC_DIR }}/js/magnific-popup.min.js"></script>
+<script>
+$('.gallery').magnificPopup({
+    delegate: 'a',
+    type: 'image',
+    gallery: {
+        enabled: true,
+        navigateByImgClick: true,
+        preload: [1,2]
+    },
+    image: {
+        titleSrc: function(item) {
+            if (item.el.attr('caption')) {
+                return (item.el.attr('caption').replace(/\\n/g, '<br />'));
+            }
+        return item.el.attr('title') + '<small>' + item.el.attr('exif') + '</small>';
+    } }
+});
+</script>
+{% endif %}

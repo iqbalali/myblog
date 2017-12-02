@@ -1,9 +1,9 @@
-@import 'variables.less';
+@import 'variables.scss';
 
 // For the big screen only
 @media screen and (min-width: 1024px) {
   #searchbar {
-    border: 1px solid @light-grey;
+    border: 1px solid $light-grey;
   }
 
   aside.sidebar {
@@ -12,7 +12,7 @@
       position: fixed;
       top: 0;
       left: 0;
-      border-right: @light-grey 1px solid;
+      border-right: $light-grey 1px solid;
 
     h2 {
         margin: 10px 0 0 0;
@@ -103,4 +103,3 @@
 
 }
 }
-

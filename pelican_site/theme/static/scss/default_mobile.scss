@@ -1,35 +1,37 @@
-@import 'variables.less';
+@import 'variables.scss';
 
 body {
     margin: 0;
     padding: 0;
-    background-color: @white;
-    color: @dark-grey;
-    font-family: @myfont;
+    background-color: $white;
+    color: $dark-grey;
+    font-family: $myfont;
     font-size: 18px;
 }
 
+#slug {display: none;}
+
 a {
-    color: @black;
+    color: $black;
     text-decoration: none;
 }
 
 a:hover {
-    color: @accent;
+    color: $accent;
 }
 
 a[class^="button_accent"]{
     padding: 10px;
-    border: 2px solid @accent;
-    .border-radius(6px);
-    color: @accent;
+    border: 2px solid $accent;
+    @include border-radius(6px);
+    color: $accent;
   &:hover {
-      color: @white;
-      background-color: @accent;
+      color: $white;
+      background-color: $accent;
   }
   &:active {
-      color: @white;
-      background-color: @accent;
+      color: $white;
+      background-color: $accent;
   }
 }
 
@@ -68,12 +70,12 @@ h2 {
 
 aside.sidebar {
   background-color: #474747;
-  color: @offwhite;
+  color: $offwhite;
   a {
-      color: @offwhite;
+      color: $offwhite;
   }
   a:hover {
-    color: @accent;
+    color: $accent;
   }
   div#user_meta {
     margin-left: auto;
@@ -81,15 +83,7 @@ aside.sidebar {
     text-align: center;
     padding: 40px;
 
-    // h2 {margin: 15px 0 5px 0;}
-
-    // p {
-    //   margin: 0 0 15px 0;
-    //   font-size: 14px;
-    // }
-
     ul {
-      // margin: 40px 40px 0 0;
       padding: 1em;
       font-size: 16px;
       list-style-type: none;
@@ -124,7 +118,7 @@ main {
   header {
     max-width: 100%;
     padding: 20px 5% 20px 5%;
-    border-top: @light-grey 1px solid;
+    border-top: $light-grey 1px solid;
     text-align: center;
 
     #headerlinks {
@@ -146,7 +140,7 @@ main {
     header {
       text-align: left;
       padding: 5px 0 5px 20px;
-      background-color: @light-grey;
+      background-color: $light-grey;
       border-bottom: 1px solid #ddd;
     }
     ul {
@@ -222,10 +216,10 @@ main {
       pre {
           margin: 22px 2px 22px 2px;
           padding: 2px 2px 2px 10px;
-          color: @black;
-          border-left: 5px solid @accent;
+          color: $black;
+          border-left: 5px solid $accent;
           font-size: 12px;
-          font-family: @mono;
+          font-family: $mono;
           background: rgba(239, 239, 239, 0.77);
           line-height: 1.125em;
           overflow-x: auto;
@@ -235,10 +229,10 @@ main {
       blockquote {
           margin: 22px 2px 22px 2px;
           padding-left: 40px;
-          color: @med-grey;
+          color: $med-grey;
           font-style: italic;
       }
-      @import 'markdowntable';
+      @import "modules/markdowntable";
     }
 
     div.gist {
@@ -247,7 +241,7 @@ main {
 
     div#article_meta {
         font-size: 16px;
-        color: @med-grey;
+        color: $med-grey;
         ul#related {
           list-style-type: none;
           padding-left: 0;
@@ -260,8 +254,8 @@ main {
   }
 
   footer {
-      border-top: @light-grey 1px solid;
-      border-bottom: @light-grey 1px solid;
+      border-top: $light-grey 1px solid;
+      border-bottom: $light-grey 1px solid;
       padding: 40px;
     a.button_accent {
       text-transform: uppercase;
@@ -275,7 +269,7 @@ main {
   div#ending_message {
     text-align: center;
     padding: 0 40px 0 40px;
-    color: @med-grey;
+    color: $med-grey;
     font-size: 10px;
   }
 
@@ -304,7 +298,7 @@ main {
 
 }
 
-.archives {
+.archives, .rss {
   width: 100%;
   list-style-type: none;
   padding: 0px;
@@ -317,7 +311,7 @@ main {
     text-decoration: none !important;
   }
   li {
-    border-bottom: @light-grey 1px solid;
+    border-bottom: $light-grey 1px solid;
     display: block;
     width: 100%;
     padding: 0 0.75em;
@@ -337,5 +331,3 @@ main {
     text-align: right;
   }
 }
-
-
