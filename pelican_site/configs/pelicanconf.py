@@ -1,12 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*- #
 from __future__ import unicode_literals
+from datetime import datetime
 import os
 import sys
 
 from markdown.extensions.codehilite import CodeHiliteExtension
 
-BASE_BLOG_PATH = os.path.abspath(os.path.join(__file__, os.pardir, os.pardir, os.pardir))
+BASE_BLOG_PATH = os.path.abspath(
+    os.path.join(__file__, os.pardir, os.pardir, os.pardir))
 
 sys.path.append(os.path.join(BASE_BLOG_PATH, 'pelican_site'))
 
@@ -18,9 +20,14 @@ IMAGES_PATH = os.path.join(CONTENT_PATH, 'images')
 THEME_PATH = os.path.join(BASE_BLOG_PATH, 'pelican_site', 'theme')
 
 # Get a list of all the articles in Lists
-# This is so that we can inject the 'list' template automatically for all List posts
+# This is so that we can inject the 'list' template
+# automatically for all List posts
 LIST_POSTS = [f for f in os.listdir(LISTS_PATH) if not f.startswith('.')]
-LIST_METADATA = {'posts/Lists/%s' % post: {'template': 'lists'} for post in LIST_POSTS}
+LIST_METADATA = {'posts/Lists/%s' % post: {'template': 'lists'}
+                 for post in LIST_POSTS}
+
+# Custom Variables
+NOW = datetime.now()
 
 # Basic Settings
 
@@ -34,7 +41,7 @@ DIRECT_TEMPLATES = ['index', 'categories', 'archives', 'tags', 'feeds']
 EXTRA_PATH_METADATA = {
     'extra/robots.txt': {'path': 'robots.txt'},
     'extra/.htaccess': {'path': '.htaccess'},
-    }
+}
 EXTRA_PATH_METADATA.update(LIST_METADATA)
 JINJA_ENVIRONMENT = dict(
     comment_start_string='###',
@@ -103,7 +110,7 @@ DEFAULT_PAGINATION = 10
 # Theme
 
 TESTING = True
-THEME = 'theme'
+THEME = THEME_PATH
 SOCIAL = (
     ('Twitter', 'http://twitter.com/rjames86'),
     ('Github', 'http://www.github.com/rjames86'),

@@ -7,6 +7,7 @@
   </style>
   {% block css %}{% endblock %}
   <link rel="shortcut icon" href="{{ SITEURL }}/images/favicon.png" type="image/png">
+  <link rel="me" href="https://micro.blog/rjames86" />
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="author" content="{{ AUTHOR }}">
@@ -92,7 +93,15 @@
 
     {% block content %}
     {% endblock %}
-    {% include "footer.html" %}
+
+    <footer>
+      {% block footer %}
+      {% endblock %}
+    </footer>
+
+    <div id="ending_message">
+      <p>&copy {{ AUTHOR }} 2016. Built using <a href="http://getpelican.com" target="_blank">Pelican</a>. Hosted on <a href="http://www.macminicolo.net">Macminicolo</a></p>
+    </div>
   </main>
   {% include "base/styles.html" %}
   {% include "base/javascript.html" %}
